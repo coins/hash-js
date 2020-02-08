@@ -1,3 +1,7 @@
+
+// TODO: Port this implementation (because it looks much cleaner) https://github.com/openssl/openssl/tree/master/crypto/ripemd
+
+
 /**
  *
  * Computes the RIPEMD160 hash of an input
