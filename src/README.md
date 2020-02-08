@@ -3,7 +3,7 @@ JavaScript hash functions for Bitcoin
 
 ## Usage
 ```javascript
-cont { sha256 } = await import('https://coins.github.io/hash-js/hash.js');
+const { sha256 } = await import('https://coins.github.io/hash-js/hash.js');
 const data = new Uint8Array([1, 2, 3])
 await sha256( data )
 ```
