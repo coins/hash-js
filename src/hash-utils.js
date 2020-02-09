@@ -8,7 +8,7 @@ export function instanciateClass(hashFn, hashLength) {
     class Hash extends Buffer {
 
         static async hash(bytes) {
-            const hash = await this.prototype.constructor._digest(bytes)
+            const hash = await hashFn(bytes)
             return new this.prototype.constructor(hash)
         }
 
@@ -19,9 +19,6 @@ export function instanciateClass(hashFn, hashLength) {
 
         static length() { return hashLength }
 
-        static get _digest() {
-            return hashFn
-        }
     }
 
     return Hash
