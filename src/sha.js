@@ -51,3 +51,16 @@ export function sha1(buffer) {
     return crypto.subtle.digest({ name: 'SHA-1' }, buffer)
         .then(new Uint8Array)
 }
+
+import { instanciateClass } from './hash-utils.js'
+const SHA_HASH_LENGTH = 32
+
+/**
+* Class for SHA256 hashes
+* @type Hash
+*/
+export const SHA256 = instanciateClass(sha256, SHA_HASH_LENGTH);
+
+export const SHA256d = instanciateClass(sha256d, SHA_HASH_LENGTH);
+export const SHA512 = instanciateClass(sha512, SHA_HASH_LENGTH);
+
