@@ -1,1 +1,1 @@
-export * from './src/primes.js'
+export * from './src/hash.js'

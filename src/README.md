@@ -8,9 +8,9 @@ const data = new Uint8Array([97, 98, 99])
 await sha256( data )
 ```
 
-### Together with Buffer
+### Convenience Classes
 ```javascript
-const { sha256 } = await import('https://coins.github.io/hash-js/hash.js')
-const Buffer = await import('https://coins.github.io/buffer-js/buffer.js')
-Buffer.toHex( await sha256( Buffer.fromUnicode('abc') ) )
+const { SHA256 } = await import('https://coins.github.io/hash-js/hash.js')
+const hash = await SHA256.hashUnicode('abc')
+hash.toHex()
 ```
