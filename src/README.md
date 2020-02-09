@@ -1,4 +1,4 @@
-# hash-js
+# hash.js
 JavaScript hash functions for Bitcoin
 
 ## Usage
