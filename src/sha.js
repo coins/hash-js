@@ -8,8 +8,8 @@
 /**
  *
  * Computes the SHA256 hash of an input
- * @param {ArrayBuffer} buffer The input
- * @return {Promise<Uint8Array>} The hash of the input
+ * @param {ArrayBuffer} buffer - The input
+ * @return {Promise<ArrayBuffer>} The hash of the input
  *
  */
 export function sha256(buffer) {
@@ -19,8 +19,8 @@ export function sha256(buffer) {
 /**
  *
  * Computes the double SHA256 hash of an input
- * @param {ArrayBuffer} buffer The input
- * @return {Promise<Uint8Array>} The hash of the input
+ * @param {ArrayBuffer} buffer - The input
+ * @return {Promise<ArrayBuffer>} The hash of the input
  *
  */
 export function sha256d(buffer) {
@@ -30,8 +30,8 @@ export function sha256d(buffer) {
 /**
  *
  * Computes the SHA512 hash of an input
- * @param {ArrayBuffer} buffer The input
- * @return {Promise<Uint8Array>} The hash of the input
+ * @param {ArrayBuffer} buffer - The input
+ * @return {Promise<ArrayBuffer>} The hash of the input
  *
  */
 export function sha512(buffer) {
@@ -41,8 +41,8 @@ export function sha512(buffer) {
 /**
  *
  * Computes the SHA1 hash of an input
- * @param {ArrayBuffer} buffer The input
- * @return {Promise<Uint8Array>} The hash of the input
+ * @param {ArrayBuffer} buffer - The input
+ * @return {Promise<ArrayBuffer>} The hash of the input
  *
  */
 export function sha1(buffer) {
