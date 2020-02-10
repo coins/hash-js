@@ -1,8 +1,6 @@
 import { Buffer } from '../../buffer-js/src/buffer.js'
 import * as Utils from '../../buffer-js/src/buffer-utils.js'
 
-
-
 export function instanciateClass(hashFn, hashLength) {
 
     class Hash extends Buffer {
