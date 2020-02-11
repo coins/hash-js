@@ -1,4 +1,3 @@
-import './jasmine-3.5.0/boot.js'
 import { SHA256 } from '../sha.js'
 
 // Test vectors: https://www.di-mgt.com.au/sha_testvectors.html
