@@ -2,7 +2,7 @@ import { hmac_sha256 } from './hmac.js'
 import { Buffer }from '../../../buffer-js/buffer.js'
 
 // Test vectors: https://github.com/bitcoin/bitcoin/blob/master/src/test/crypto_tests.cpp#L295
-
+// Test vectors: https://tools.ietf.org/html/rfc4868#section-2.7.1
 describe('The HMAC functions', function() {
 
     describe('HMAC_SHA256', function() {

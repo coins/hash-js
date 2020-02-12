@@ -24,10 +24,12 @@ export async function hmac(key, message, hash, blockSize, outputSize) {
         key = Buffer.padRight(key, blockSize) // Pad key with zeros to make it blockSize bytes long
     }
 
-    const innerPad = Buffer.fromBigInt(key.toBigInt() ^ Buffer.toBigInt(Buffer.repeat(0x36, blockSize)))
-    const outerPad = Buffer.fromBigInt(key.toBigInt() ^ Buffer.toBigInt(Buffer.repeat(0x5c, blockSize)))
+    const innerPad = Buffer.xor(key, Buffer.repeat(0x36, blockSize))
+    const outerPad = Buffer.xor(key, Buffer.repeat(0x5c, blockSize))
 
-    return hash.hash(Buffer.concat(outerPad, (await hash.hash(Buffer.concat(innerPad, message)))))
+    const innerHash = await hash.hash(Buffer.concat(innerPad, message))
+    const outerHash = await hash.hash(Buffer.concat(outerPad, innerHash))
+    return outerHash
 }
 
 /**
