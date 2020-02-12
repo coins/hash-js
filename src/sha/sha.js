@@ -50,15 +50,24 @@ export function sha1(buffer) {
 }
 
 import { instanciateClass } from '../hash-utils.js'
-const SHA_HASH_LENGTH = 32
+const SHA256_HASH_LENGTH = 32
+const SHA512_HASH_LENGTH = 64
 
 /**
 * Class for SHA256 hashes
 * @type Hash
 */
-export const SHA256 = instanciateClass(sha256, SHA_HASH_LENGTH);
+export const SHA256 = instanciateClass(sha256, SHA256_HASH_LENGTH)
 
-export const SHA256d = instanciateClass(sha256d, SHA_HASH_LENGTH);
+/**
+* Class for double SHA256 hashes
+* @type Hash
+*/
+export const SHA256d = instanciateClass(sha256d, SHA256_HASH_LENGTH)
 
-export const SHA512 = instanciateClass(sha512, SHA_HASH_LENGTH);
+/**
+* Class for SHA512 hashes
+* @type Hash
+*/
+export const SHA512 = instanciateClass(sha512, SHA512_HASH_LENGTH)
 
