@@ -19,7 +19,7 @@ describe('SHA hash functions', function() {
             expect(hash.toHex()).toBe('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
         })
 
-        it('can hash an long pre-image', async function() {
+        it('can hash a long pre-image', async function() {
             const hash = await SHA256.hashUnicode('abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu')
             expect(hash.toHex()).toBe('cf5b16a778af8380036ce59e7b0492370b249b11e8f07a51afac45037afee9d1')
         })
