@@ -15,6 +15,11 @@ export function instanciateClass(hashFn, hashLength) {
             return this.prototype.constructor.hash(bytes)
         }
 
+        static hashHex(string, encoding) {
+            const bytes = Utils.fromHex(string, encoding)
+            return this.prototype.constructor.hash(bytes)
+        }
+
         static length() { return hashLength }
 
     }
