@@ -1,5 +1,5 @@
 import { Buffer } from '../../buffer-js/src/buffer.js'
-import * as Utils from '../../buffer-js/src/buffer-utils.js'
+import * as Utils from '../../buffer-js/src/buffer-utils/buffer-utils.js'
 
 export function instanciateClass(hashFn, hashLength) {
 

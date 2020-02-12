@@ -5,7 +5,6 @@ import { RIPEMD160 } from './ripemd160.js'
 
 describe('The RIPEMD hash functions', function() {
 
-    //demonstrates use of RIPEMD160
     describe('RIPEMD160', function() {
 
         it('can hash a pre-image', async function() {
