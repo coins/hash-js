@@ -49,7 +49,7 @@ export function sha1(buffer) {
     return crypto.subtle.digest({ name: 'SHA-1' }, buffer)
 }
 
-import { instanciateClass } from './hash-utils.js'
+import { instanciateClass } from '../hash-utils.js'
 const SHA_HASH_LENGTH = 32
 
 /**

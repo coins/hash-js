@@ -1,114 +1,87 @@
-
-// TODO: Port this implementation (because it looks much cleaner) https://github.com/openssl/openssl/tree/master/crypto/ripemd
-
-
-/**
- *
- * Computes the RIPEMD160 hash of an input
- * @param {ArrayBuffer} buffer The input
- * @return {Promise<Uint8Array>} The hash of the input
- *
- */
-export function ripemd160(buffer) {
-    const hash = new Uint8Array(RIPEMD.hash(new Uint8Array(buffer).buffer)).reverse();
-    return Promise.resolve(hash); // We wrap the result into a promise to stay consistent with the interfaces of all our SHA hash functions 
-}
-
-/**
- *
- * Computes the RIPEMD160 hash of the SHA256 hash an input
- * @param {ArrayBuffer} buffer The input
- * @return {Promise<Uint8Array>} The hash of the input
- *
- */
-export function hash160(buffer) {
-    return sha256(buffer).then(hash => ripemd160(hash));
-}
-
-class RIPEMD {
+export class RIPEMD {
 
     static get_n_pad_bytes(message_size /* in bytes, 1 byte is 8 bits. */ ) {
         //  Obtain the number of bytes needed to pad the message.
         // It does not contain the size of the message size information.
         /*
-        	https://webcache.googleusercontent.com/search?q=cache:CnLOgolTHYEJ:https://www.cosic.esat.kuleuven.be/publications/article-317.pdf
-        	The Cryptographic Hash Function RIPEMD-160
-        	written by
-        		Bart Preneel,
-        		Hans Dobbertin,
-        		Antoon Bosselaers
-        	in
-        		1997.
-        	--------------------------------------------------
-        	§5     Description of RIPEMD-160
-        	......
-        	 In order to guarantee that the total input size is a
-        	multiple of 512 bits, the input is padded in the same
-        	way as for all the members of the MD4-family: one
-        	appends a single 1 followed by a string of 0s (the
-        	number of 0s lies between 0 and 511); the last 64 bits
-        	of the extended input contain the binary representation
-        	of the input size in bits, least significant byte first.
+            https://webcache.googleusercontent.com/search?q=cache:CnLOgolTHYEJ:https://www.cosic.esat.kuleuven.be/publications/article-317.pdf
+            The Cryptographic Hash Function RIPEMD-160
+            written by
+                Bart Preneel,
+                Hans Dobbertin,
+                Antoon Bosselaers
+            in
+                1997.
+            --------------------------------------------------
+            §5     Description of RIPEMD-160
+            ......
+             In order to guarantee that the total input size is a
+            multiple of 512 bits, the input is padded in the same
+            way as for all the members of the MD4-family: one
+            appends a single 1 followed by a string of 0s (the
+            number of 0s lies between 0 and 511); the last 64 bits
+            of the extended input contain the binary representation
+            of the input size in bits, least significant byte first.
         */
         /*
-        	https://tools.ietf.org/rfc/rfc1186.txt
-        	RFC 1186: MD4 Message Digest Algorithm.
-        	written by
-        		Ronald Linn Rivest
-        	in
-        		October 1990.
-        	--------------------------------------------------
-        	§3     MD4 Algorithm Description
-        	......
-        	Step 1. Append padding bits
-        	 The message is "padded" (extended) so that its length
-        	(in bits) is congruent to 448, modulo 512. That is, the
-        	message is extended so that it is just 64 bits shy of
-        	being a multiple of 512 bits long. Padding is always
-        	performed, even if the length of the message is already
-        	congruent to 448, modulo 512 (in which case 512 bits of
-        	padding are added).
-        	 Padding is performed as follows: a single "1" bit is
-        	appended to the message, and then enough zero bits are
-        	appended so that the length in bits of the padded
-        	message becomes congruent to 448, modulo 512.
-        	Step 2. Append length
-        	 A 64-bit representation of b (the length of the message
-        	before the padding bits were added) is appended to the
-        	result of the previous step. In the unlikely event that
-        	b is greater than 2^64, then only the low-order 64 bits
-        	of b are used. (These bits are appended as two 32-bit
-        	words and appended low-order word first in accordance
-        	with the previous conventions.)
-        	 At this point the resulting message (after padding with
-        	bits and with b) has a length that is an exact multiple
-        	of 512 bits. Equivalently, this message has a length
-        	that is an exact multiple of 16 (32-bit) words. Let
-        	M[0 ... N-1] denote the words of the resulting message,
-        	where N is a multiple of 16.
+            https://tools.ietf.org/rfc/rfc1186.txt
+            RFC 1186: MD4 Message Digest Algorithm.
+            written by
+                Ronald Linn Rivest
+            in
+                October 1990.
+            --------------------------------------------------
+            §3     MD4 Algorithm Description
+            ......
+            Step 1. Append padding bits
+             The message is "padded" (extended) so that its length
+            (in bits) is congruent to 448, modulo 512. That is, the
+            message is extended so that it is just 64 bits shy of
+            being a multiple of 512 bits long. Padding is always
+            performed, even if the length of the message is already
+            congruent to 448, modulo 512 (in which case 512 bits of
+            padding are added).
+             Padding is performed as follows: a single "1" bit is
+            appended to the message, and then enough zero bits are
+            appended so that the length in bits of the padded
+            message becomes congruent to 448, modulo 512.
+            Step 2. Append length
+             A 64-bit representation of b (the length of the message
+            before the padding bits were added) is appended to the
+            result of the previous step. In the unlikely event that
+            b is greater than 2^64, then only the low-order 64 bits
+            of b are used. (These bits are appended as two 32-bit
+            words and appended low-order word first in accordance
+            with the previous conventions.)
+             At this point the resulting message (after padding with
+            bits and with b) has a length that is an exact multiple
+            of 512 bits. Equivalently, this message has a length
+            that is an exact multiple of 16 (32-bit) words. Let
+            M[0 ... N-1] denote the words of the resulting message,
+            where N is a multiple of 16.
         */
         // https://crypto.stackexchange.com/a/32407/54568
         /*
-        	Example case  # 1
-        		[0 bit: message.]
-        		[1 bit: 1.]
-        		[447 bits: 0.]
-        		[64 bits: message size information.]
-        	Example case  # 2
-        		[512-bits: message]
-        		[1 bit: 1.]
-        		[447 bits: 0.]
-        		[64 bits: message size information.]
-        	Example case  # 3
-        		[(512 - 64 = 448) bits: message.]
-        		[1 bit: 1.]
-        		[511 bits: 0.]
-        		[64 bits: message size information.]
-        	Example case  # 4
-        		[(512 - 65 = 447) bits: message.]
-        		[1 bit: 1.]
-        		[0 bit: 0.]
-        		[64 bits: message size information.]
+            Example case  # 1
+                [0 bit: message.]
+                [1 bit: 1.]
+                [447 bits: 0.]
+                [64 bits: message size information.]
+            Example case  # 2
+                [512-bits: message]
+                [1 bit: 1.]
+                [447 bits: 0.]
+                [64 bits: message size information.]
+            Example case  # 3
+                [(512 - 64 = 448) bits: message.]
+                [1 bit: 1.]
+                [511 bits: 0.]
+                [64 bits: message size information.]
+            Example case  # 4
+                [(512 - 65 = 447) bits: message.]
+                [1 bit: 1.]
+                [0 bit: 0.]
+                [64 bits: message size information.]
         */
         // The number of padding zero bits:
         //      511 - [{(message size in bits) + 64} (mod 512)]
@@ -139,17 +112,17 @@ Method #1
    [00000000 AAAAAAAA AAAAAAAA AAAAABBB] (<A> & <B_2> merged)
    [00000000 AAAAAAAA AAAAAAAA AAAAABBB][BBBBBBBB BBBBBBBB BBBBBBBB BBBBB000]
     00000000 ???????? ???????? ????????  ???????? ???????? ???????? ?????000
-		const uint32_max_plus_1 = 0x100000000; // (2 ** 32)
-		const [
-			msg_byte_size_most, // Value range [0, (2 ** 21) - 1].
-			msg_byte_size_least // Value range [0, (2 ** 32) - 1].
-		] = divmod(message_size, uint32_max_plus_1);
-		const [
-			carry, // Value range [0, 7].
-			msg_bit_size_least // Value range [0, (2 ** 32) - 8].
-		] = divmod(message_byte_size_least * 8, uint32_max_plus_1);
-		const message_bit_size_most = message_byte_size_most * 8
-			+ carry; // Value range [0, (2 ** 24) - 1].
+        const uint32_max_plus_1 = 0x100000000; // (2 ** 32)
+        const [
+            msg_byte_size_most, // Value range [0, (2 ** 21) - 1].
+            msg_byte_size_least // Value range [0, (2 ** 32) - 1].
+        ] = divmod(message_size, uint32_max_plus_1);
+        const [
+            carry, // Value range [0, 7].
+            msg_bit_size_least // Value range [0, (2 ** 32) - 8].
+        ] = divmod(message_byte_size_least * 8, uint32_max_plus_1);
+        const message_bit_size_most = message_byte_size_most * 8
+            + carry; // Value range [0, (2 ** 24) - 1].
 --------------------------------------------------------------------------------
 Method #2
     00000000 000????? ???????? ????????  ???????? ???????? ???????? ????????
@@ -158,7 +131,7 @@ Method #2
                           (<B> shifted) [BBBBBBBB BBBBBBBB BBBBBBBB BBBBB000]
    [00000000 AAAAAAAA AAAAAAAA AAAAAAAA][BBBBBBBB BBBBBBBB BBBBBBBB BBBBB000]
     00000000 ???????? ???????? ????????  ???????? ???????? ???????? ?????000
-		*/
+        */
         const [
             msg_bit_size_most,
             msg_bit_size_least
