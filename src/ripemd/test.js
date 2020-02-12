@@ -3,7 +3,7 @@ import { RIPEMD160 } from './ripemd160.js'
 // Test vectors: https://github.com/bitcoin/bitcoin/blob/master/src/test/crypto_tests.cpp
 
 
-describe('The RIPEMD hash function', function() {
+describe('The RIPEMD hash functions', function() {
 
     //demonstrates use of RIPEMD160
     describe('RIPEMD160', function() {

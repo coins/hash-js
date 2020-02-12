@@ -4,7 +4,7 @@ import { SHA256 } from './sha.js'
 // Test vectors: https://github.com/bitcoin/bitcoin/blob/master/src/test/crypto_tests.cpp
 
 
-describe('SHA hash functions', function() {
+describe('The SHA hash functions', function() {
 
     //demonstrates use of SHA256
     describe('SHA256', function() {
