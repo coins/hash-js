@@ -1,4 +1,4 @@
-import { SHA256 } from '../hash.js'
+import { SHA256, SHA512 } from '../hash.js'
 import * as Buffer from '../../../buffer-js/src/buffer-utils/buffer-utils.js'
 
 
@@ -41,4 +41,15 @@ export async function hmac(key, message, hashFn, blockSize, outputSize) {
  */
 export function hmac_sha256(key, message) {
     return hmac(key, message, SHA256, 64, 32)
+}
+
+/**
+ *    Computes a hash-based message authentication code using sha512.
+ *
+ *    @param {Bytes} key - Array of bytes
+ *    @param {Bytes} message - Array of bytes to be hashed
+ *    @return {Bytes} - the HMAC_sha512
+ */
+export function hmac_sha512(key, message) {
+    return hmac(key, message, SHA512, 128, 64)
 }
