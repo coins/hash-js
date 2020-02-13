@@ -1,5 +1,6 @@
 export * from './sha/sha.js'
 export * from './ripemd/ripemd160.js'
+export * from './hmac/hmac.js'
 
 import { instanciateClass } from './hash-utils.js'
 import { sha256 } from './sha/sha.js'
@@ -20,3 +21,4 @@ export function hash160(buffer) {
  * @type Hash
  */
 export const HASH160 = instanciateClass(hash160, 20)
+

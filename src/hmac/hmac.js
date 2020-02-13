@@ -53,3 +53,4 @@ export function hmac_sha256(key, message) {
 export function hmac_sha512(key, message) {
     return hmac(key, message, SHA512, 128, 64)
 }
+
