@@ -5,6 +5,8 @@
  *
  */
 
+import { instanciateClass } from '../hash-utils.js'
+
 /**
  *
  * Computes the SHA256 hash of an input
@@ -49,7 +51,7 @@ export function sha1(buffer) {
     return crypto.subtle.digest({ name: 'SHA-1' }, buffer)
 }
 
-import { instanciateClass } from '../hash-utils.js'
+
 const SHA1_HASH_LENGTH = 20
 const SHA256_HASH_LENGTH = 32
 const SHA512_HASH_LENGTH = 64
@@ -71,7 +73,6 @@ export const SHA256d = instanciateClass(sha256d, SHA256_HASH_LENGTH)
 * @type Hash
 */
 export const SHA512 = instanciateClass(sha512, SHA512_HASH_LENGTH)
-
 
 /**
 * Class for SHA1 hashes

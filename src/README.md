@@ -8,6 +8,8 @@ Currently implemented:
 - `RIPEMD160`
 - `HASH160 = RIPEMD160(SHA256(msg))`
 - `SHA1`
+- `hmac_sha256`
+- `hmac_sha512`
 
 ## Convenience Classes
 There are wrapper classes providing high-level methods to work with byte arrays:
