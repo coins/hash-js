@@ -2,6 +2,7 @@ import { instanciateClass } from '../hash-utils.js'
 import { sha256 } from '../sha/sha.js'
 import { ripemd160 } from '../ripemd/ripemd160.js'
 
+
 /**
  *
  * Computes the RIPEMD160(SHA256(input)) hash of an input
@@ -9,8 +10,9 @@ import { ripemd160 } from '../ripemd/ripemd160.js'
  * @return {Promise<Uint8Array>} The hash of the input
  *
  */
-export function hash160(buffer) {
-    return sha256(buffer).then(hash => ripemd160(hash));
+export async function hash160(buffer) {
+    const shaHash = await sha256(buffer)
+    return ripemd160(shaHash)
 }
 
 /**
