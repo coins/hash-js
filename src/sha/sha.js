@@ -84,28 +84,37 @@ export const SHA512 = instanciateClass(sha512, SHA512_HASH_LENGTH)
 export const SHA1 = instanciateClass(sha1, SHA1_HASH_LENGTH)
 
 
-
+/** 
+ * A serializable double-SHA256 hash with high-level buffer methods. 
+ */
 export class SerialSHA256d extends SHA256d {
 
-    byteLength() {
-        return this.constructor.byteLength();
-    }
-
+    /** 
+     * @override
+     */
     toHex() {
-        const copy = this.slice(0).reverse(); // reverse to fix Satoshi's byte order
+        const copy = this.slice(0).reverse() // reverse to fix Satoshi's byte order
         return toHex(copy)
     }
 
+    /** 
+     * @override
+     */
     write(writer) {
-        writer.writeBytes(this.slice(0));
+        writer.writeBytes(this.slice(0))
     }
 
     static read(reader) {
-        const hash = reader.readBytes(this.byteLength());
-        return new SerialSHA256d(hash);
+        const hash = reader.readBytes(this.byteLength())
+        return new SerialSHA256d(hash)
     }
 
-    static byteLength() { return 32; }
+    // TODO: WTF is this code smell?
+    byteLength() {
+        return this.constructor.byteLength()
+    }
+
+    static byteLength() { return 32 }
 }
 
 
