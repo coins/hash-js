@@ -7,8 +7,29 @@ import { toHex } from '../../../buffer-js/buffer.js'
  *
  */
 
-
 import { instanciateClass } from '../hash-utils.js'
+
+/*
+
+    WebCrypto is only available in secure origins.
+    @see https://stackoverflow.com/questions/46670556/how-to-enable-crypto-subtle-for-unsecure-origins-in-chrome
+    
+ */
+
+let digest;
+
+if (window.crypto.subtle) {
+    digest = window.crypto.digest
+} else {
+    console.error('Error: Code must run under secure origin!')
+    digest = async (options, message) => {
+        const { sha256 } = await import('./sha256-polyfill.js')
+        return sha256(new Uint8Array(message))
+    }
+    // TODO: Polyfill other functions.
+}
+
+
 
 /**
  *
@@ -18,7 +39,7 @@ import { instanciateClass } from '../hash-utils.js'
  *
  */
 export function sha256(buffer) {
-    return crypto.subtle.digest({ name: 'SHA-256' }, buffer)
+    return digest({ name: 'SHA-256' }, buffer)
 }
 
 /**
@@ -40,7 +61,7 @@ export function sha256d(buffer) {
  *
  */
 export function sha512(buffer) {
-    return crypto.subtle.digest({ name: 'SHA-512' }, buffer)
+    return digest({ name: 'SHA-512' }, buffer)
 }
 
 /**
@@ -51,7 +72,7 @@ export function sha512(buffer) {
  *
  */
 export function sha1(buffer) {
-    return crypto.subtle.digest({ name: 'SHA-1' }, buffer)
+    return digest({ name: 'SHA-1' }, buffer)
 }
 
 
@@ -115,17 +136,4 @@ export class SerialSHA256d extends SHA256d {
     }
 
     static byteLength() { return 32 }
-}
-
-
-
-/*
-
-	WebCrypto is only available in secure origins.
-	@see https://stackoverflow.com/questions/46670556/how-to-enable-crypto-subtle-for-unsecure-origins-in-chrome
-	
- */
-if (!crypto.subtle) {
-    console.error('Error: Code must run under secure origin!')
-    alert('Error: Code must run under https or localhost.')
 }

@@ -10,8 +10,8 @@
  * @param  {Uint8Array} byteArray - The byte array to hash.
  * @return {Uint8Array} - The hash.
  */
-export function sha256(string) {
-    const result = arrayToString(run(stringToArray(string), string.length * 8))   
+export function sha256(bytes) {
+    const result = arrayToBytes(run(bytesToArray(bytes), bytes.length * 8))
     return result.buffer
 }
 
@@ -123,7 +123,7 @@ const add = (x, y) => {
  * Helper functions for byte array conversion
  */
 
-function arrayToString(input) {
+function arrayToBytes(input) {
     const l = input.length * 32;
     let i = 0,
         output = [];
@@ -134,7 +134,7 @@ function arrayToString(input) {
     return new Uint8Array(output);
 }
 
-function stringToArray(input) {
+function bytesToArray(input) {
     const l = input.length * 8;
     const output = Array(input.length >> 2);
     const lo = output.length;
@@ -144,7 +144,7 @@ function stringToArray(input) {
         output[i] = 0;
     }
     for (i = 0; i < l; i += 8) {
-        output[i >> 5] |= (input.charCodeAt(i / 8) & 0xFF) << 24 - i % 32;
+        output[i >> 5] |= (input[i / 8] & 0xFF) << 24 - i % 32;
     }
     return output;
 }

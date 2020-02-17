@@ -8,7 +8,7 @@ import { instanciateClass } from '../hash-utils.js'
 
 describe('The SHA hash functions', function() {
 
-    
+    //demonstrates use of SHA256
     describe('SHA256', function() {
 
         it('can hash a pre-image', async function() {
@@ -30,23 +30,23 @@ describe('The SHA hash functions', function() {
 
 
 
-    
+    //demonstrates use of SHA256
     describe('SHA256 polyfill', function() {
 
         const SHA256Polyfill = instanciateClass(sha256,32)
 
         it('can hash a pre-image', async function() {
-            const hash = await SHA256Polyfill.hash('abc') // TODO: this should be .hashUnicode
+            const hash = await SHA256Polyfill.hashUnicode('abc')
             expect(hash.toHex()).toBe('ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad')
         })
 
         it('can hash an empty pre-image', async function() {
-            const hash = await SHA256Polyfill.hash('') 
+            const hash = await SHA256Polyfill.hashUnicode('')
             expect(hash.toHex()).toBe('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
         })
 
         it('can hash a long pre-image', async function() {
-            const hash = await SHA256Polyfill.hash('abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu') 
+            const hash = await SHA256Polyfill.hashUnicode('abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu')
             expect(hash.toHex()).toBe('cf5b16a778af8380036ce59e7b0492370b249b11e8f07a51afac45037afee9d1')
         })
 
