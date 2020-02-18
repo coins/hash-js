@@ -8,7 +8,7 @@
 
 /**
  * @param  {Uint8Array} byteArray - The byte array to hash.
- * @return {Uint8Array} - The hash.
+ * @return {ArrayBuffer} - The hash.
  */
 export function sha256(bytes) {
     const result = arrayToBytes(run(bytesToArray(bytes), bytes.length * 8))

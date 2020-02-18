@@ -21,12 +21,14 @@ let digest;
 if (window.crypto.subtle) {
     digest = window.crypto.digest
 } else {
-    console.error('Error: Code must run under secure origin!')
     digest = async (options, message) => {
+        
+        if (options.name !== 'SHA-256') // TODO: Polyfill the other hash functions.
+            return alert('Error: Code should run under secure origin!')
+
         const { sha256 } = await import('./sha256-polyfill.js')
         return sha256(new Uint8Array(message))
     }
-    // TODO: Polyfill other functions.
 }
 
 
