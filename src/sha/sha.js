@@ -16,13 +16,13 @@ import { instanciateClass } from '../hash-utils.js'
     
  */
 
-let digest;
+let crypto = {};
 
 if (window.crypto.subtle) {
-    digest = window.crypto.digest
+    crypto = window.crypto.subtle
 } else {
-    digest = async (options, message) => {
-        
+    crypto.digest = async (options, message) => {
+
         if (options.name !== 'SHA-256') // TODO: Polyfill the other hash functions.
             return alert('Error: Code should run under secure origin!')
 
@@ -41,7 +41,7 @@ if (window.crypto.subtle) {
  *
  */
 export function sha256(buffer) {
-    return digest({ name: 'SHA-256' }, buffer)
+    return crypto.digest({ name: 'SHA-256' }, buffer)
 }
 
 /**
@@ -63,7 +63,7 @@ export function sha256d(buffer) {
  *
  */
 export function sha512(buffer) {
-    return digest({ name: 'SHA-512' }, buffer)
+    return crypto.digest({ name: 'SHA-512' }, buffer)
 }
 
 /**
@@ -74,7 +74,7 @@ export function sha512(buffer) {
  *
  */
 export function sha1(buffer) {
-    return digest({ name: 'SHA-1' }, buffer)
+    return crypto.digest({ name: 'SHA-1' }, buffer)
 }
 
 
