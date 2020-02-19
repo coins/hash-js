@@ -16,21 +16,25 @@ import { instanciateClass } from '../hash-utils.js'
     
  */
 
-let crypto = {};
+let crypto = {}
 
-if (window.crypto.subtle) {
+// Check if the WebCrypto is available.
+if (window && window.crypto && window.crypto.subtle) {
     crypto = window.crypto.subtle
 } else {
+    // Otherwise, use a polyfill.
     crypto.digest = async (options, message) => {
 
-        if (options.name !== 'SHA-256') // TODO: Polyfill the other hash functions.
-            return alert('Error: Code should run under secure origin!')
+        // Only sha256 is currently supported
+        if (options.name !== 'SHA-256') { // TODO: Polyfill the other hash functions.
+            alert('Error: WebCrypto is only available under https or localhost')
+            throw Error('WebCrypto is only available under secure origin!')
+        }
 
         const { sha256 } = await import('./sha256-polyfill.js')
-        return sha256(new Uint8Array(message))
+        return sha256(message)
     }
 }
-
 
 
 /**

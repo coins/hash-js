@@ -1,21 +1,21 @@
 /*!
  * sha256-es
- * https://github.com/logotype/es-crypto.git
  *
  * Copyright 2017 Victor Norgren
  * Released under the MIT license
  */
 
 /**
- * @param  {Uint8Array} byteArray - The byte array to hash.
+ * @param  {ArrayBuffer} byteArray - The byte array to hash.
  * @return {ArrayBuffer} - The hash.
  */
 export function sha256(bytes) {
+    bytes = new Uint8Array(bytes)
     const result = arrayToBytes(run(bytesToArray(bytes), bytes.length * 8))
     return result.buffer
 }
 
-function run(input, len) {
+function run(input, length) {
     const K = [
         1116352408, 1899447441, 3049323471, 3921009573, 961987163, 1508970993, 2453635748, 2870763221,
         3624381080, 310598401, 607225278, 1426881987, 1925078388, 2162078206, 2614888103, 3248222580,
@@ -26,8 +26,15 @@ function run(input, len) {
         430227734, 506948616, 659060556, 883997877, 958139571, 1322822218, 1537002063, 1747873779,
         1955562222, 2024104815, 2227730452, 2361852424, 2428436474, 2756734187, 3204031479, 3329325298
     ];
-    const l = (len + 64 >> 9 << 4) + 15;
-    const W = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    const l = (length + 64 >> 9 << 4) + 15
+
+    const W = [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    ]
 
     let i = 0,
         H0 = 1779033703,
@@ -47,8 +54,8 @@ function run(input, len) {
         g = H6,
         h = H7;
 
-    input[len >> 5] |= 0x80 << 24 - len % 32;
-    input[l] = len;
+    input[length >> 5] |= 0x80 << 24 - length % 32;
+    input[l] = length;
 
     for (; i < l; i += 16) {
         H0 = a;
@@ -122,28 +129,27 @@ const add = (x, y) => {
 /**
  * Helper functions for byte array conversion
  */
-
 function arrayToBytes(input) {
-    const l = input.length * 32;
+    const length = input.length * 32;
     let i = 0,
         output = [];
 
-    for (; i < l; i += 8) {
+    for (; i < length; i += 8) {
         output.push(input[i >> 5] >>> 24 - i % 32 & 0xFF);
     }
     return new Uint8Array(output);
 }
 
 function bytesToArray(input) {
-    const l = input.length * 8;
+    const length = input.length * 8;
     const output = Array(input.length >> 2);
-    const lo = output.length;
+    const outputLength = output.length;
     let i = 0;
 
-    for (; i < lo; i += 1) {
+    for (; i < outputLength; i += 1) {
         output[i] = 0;
     }
-    for (i = 0; i < l; i += 8) {
+    for (i = 0; i < length; i += 8) {
         output[i >> 5] |= (input[i / 8] & 0xFF) << 24 - i % 32;
     }
     return output;
