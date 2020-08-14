@@ -10,6 +10,7 @@ Currently implemented:
 - `SHA1`
 - `hmac_sha256`
 - `hmac_sha512`
+- `pdkdf2`
 
 ## High-level API
 There are convenience classes providing high-level methods to work with byte arrays:
