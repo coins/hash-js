@@ -54,3 +54,15 @@ export function hmac_sha512(key, message) {
     return hmac(key, message, SHA512, 128, 64)
 }
 
+
+/*
+using the native browser API:
+
+async function hmac(secret, message){
+	const algorithm = { name: 'HMAC', hash: 'SHA-256' };
+	const key = await crypto.subtle.importKey('raw', secret, algorithm, false, ['sign'])
+	const result = await crypto.subtle.sign(algorithm.name, key, message)
+	return new Uint8Array(result)
+}
+
+*/
